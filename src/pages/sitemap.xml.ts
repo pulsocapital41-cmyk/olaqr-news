@@ -7,7 +7,7 @@ export async function GET() {
   const urls = [
     { loc: `${SITE}/`, lastmod: notas[0]?.data.pubDate },
     ...[...secs].map((s) => ({ loc: `${SITE}/seccion/${s}/`, lastmod: undefined as Date | undefined })),
-    ...notas.map((n) => ({ loc: `${SITE}/nota/${n.id}/`, lastmod: n.data.pubDate })),
+    ...notas.map((n) => ({ loc: `${SITE}/noticias/${n.id}/`, lastmod: n.data.pubDate })),
   ];
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
     .map((u) => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod.toISOString()}</lastmod>` : ''}</url>`)

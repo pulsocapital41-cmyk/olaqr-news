@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import { getNotas, SITE, img, summary, cats, fmt, optimize } from '../../lib';
+export async function getStaticPaths() {
+  const notas = await getNotas();
+  return notas.map((nota) => ({ params: { slug: nota.id }, props: { nota, notas } }));
+}
+const { nota, notas } = Astro.props;
+const { Content } = await render(nota);
+const src = img(nota);
+const artSrc = optimize(src, 1200);
+const url = `${SITE}/noticias/${nota.id}/`;
+const related = notas.filter((n) => n.id !== nota.id && cats(n).some((c) => cats(nota).includes(c))).slice(0, 3);
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: nota.data.title,
+  description: summary(nota),
+  image: src ? [new URL(src, SITE).href] : undefined,
+  datePublished: nota.data.pubDate.toISOString(),
+  dateModified: nota.data.pubDate.toISOString(),
+  author: { '@type': 'Organization', name: nota.data.author },
+  publisher: { '@type': 'Organization', name: 'OLAQR News', logo: { '@type': 'ImageObject', url: `${SITE}/logo.png` } },
+  mainEntityOfPage: url,
+};
+---
+<Base title={nota.data.title} description={summary(nota)} image={src} type="article" jsonld={jsonld}>
+  <article class="wrap article">
+    <header>
+      <div class="tags">{cats(nota).map((c) => <span class="tag">{c}</span>)}</div>
+      <h1>{nota.data.title}</h1>
+      {summary(nota) && <p class="lead">{summary(nota)}</p>}
+      <div class="meta">Por <strong>{nota.data.author}</strong> · <time>{fmt(nota.data.pubDate)}</time></div>
+    </header>
+    {artSrc && <img class="art-img" src={artSrc} alt={nota.data.title} />}
+    <div class="body"><Content /></div>
+  </article>
+  {related.length > 0 && (
+    <section class="wrap">
+      <h2 class="sec-title"><span>Te puede interesar</span></h2>
+      <div class="grid3">{related.map((n) => <Card nota={n} />)}</div>
+    </section>
+  )}
+</Base>

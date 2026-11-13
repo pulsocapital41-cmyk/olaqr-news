@@ -1,8 +1,8 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const notas = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/notas' }),
+const noticias = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/noticias' }),
   schema: z.object({
     title: z.string(),
     subtitle: z.string().optional(),
@@ -10,13 +10,17 @@ const notas = defineCollection({
     description: z.string().optional(),
     pubDate: z.coerce.date(),
     author: z.string().default('OLAQR News'),
-    categories: z.array(z.string()).default([]),
     category: z.string().optional(),
+    categories: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
-    heroImage: z.string().optional(),
     image: z.string().optional(),
+    imageCaption: z.string().optional(),
+    heroImage: z.string().optional(),
+    featured: z.boolean().default(false),
+    breaking: z.boolean().default(false),
+    oldSlug: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { notas };
+export const collections = { noticias };
