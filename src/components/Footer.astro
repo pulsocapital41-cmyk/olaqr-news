@@ -1,0 +1,26 @@
+---
+import { SECTIONS, FOOTER_SECTIONS, CENTRAL, slugify } from '../lib';
+---
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <div>
+      <img src="/logo.png" alt="OLAQR News" height="72" class="foot-logo" />
+      <p>Noticias, turismo, naturaleza, historia y cultura de Quintana Roo y el Caribe Mexicano.</p>
+    </div>
+    <div>
+      <h4>Secciones</h4>
+      <ul>
+        {[...SECTIONS, ...FOOTER_SECTIONS].map((s) => <li><a href={`/seccion/${slugify(s)}/`}>{s}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:contacto@olaqrnews.com.mx">contacto@olaqrnews.com.mx</a></li>
+        <li><a href="mailto:redaccion@olaqrnews.com.mx">redaccion@olaqrnews.com.mx</a></li>
+        <li><a href={CENTRAL} target="_blank" rel="noopener">Central Editorial</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap copy">© {new Date().getFullYear()} OLAQR News. Todos los derechos reservados.</div>
+</footer>

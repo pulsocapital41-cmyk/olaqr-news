@@ -1,0 +1,22 @@
+---
+import { SECTIONS, CENTRAL, slugify } from '../lib';
+const path = Astro.url.pathname;
+---
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <span>Quintana Roo · Caribe Mexicano</span>
+    <a href={CENTRAL} target="_blank" rel="noopener">Sala de Redacción ↗</a>
+  </div>
+</div>
+<header class="site-header">
+  <div class="wrap head-in">
+    <a href="/" class="brand" aria-label="OLAQR News">
+      <img src="/logo.png" alt="OLAQR News" height="64" />
+    </a>
+    <nav class="nav" aria-label="Secciones">
+      {SECTIONS.map((s) => (
+        <a href={`/seccion/${slugify(s)}/`} class:list={[{ active: path.startsWith(`/seccion/${slugify(s)}`) }]}>{s}</a>
+      ))}
+    </nav>
+  </div>
+</header>

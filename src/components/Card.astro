@@ -1,0 +1,17 @@
+---
+import { img, summary, cats, fmt, optimize } from '../lib';
+const { nota, size = 'md' } = Astro.props;
+const src = optimize(img(nota), 600);
+const c = cats(nota)[0];
+---
+<article class={`card card-${size}`}>
+  <a href={`/nota/${nota.id}/`} class="card-img">
+    {src ? <img src={src} alt={nota.data.title} loading="lazy" /> : <div class="ph"></div>}
+  </a>
+  <div class="card-body">
+    {c && <span class="tag">{c}</span>}
+    <h3><a href={`/nota/${nota.id}/`}>{nota.data.title}</a></h3>
+    {size !== 'sm' && <p>{summary(nota)}</p>}
+    <time>{fmt(nota.data.pubDate)}</time>
+  </div>
+</article>
